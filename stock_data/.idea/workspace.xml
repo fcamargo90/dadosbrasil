@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5f27a7cc-e7c0-46db-bb00-10597978e380" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1e5aSoJcCkJ9Hqz6V7n5benD5nS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/main.py" />
+    <property name="settings.editor.selected.configurable" value="pyconsole" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myUseExistingConsole" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="invest" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="D:\Users\joaoc\miniconda3\envs\invest\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5f27a7cc-e7c0-46db-bb00-10597978e380" name="Default Changelist" comment="" />
+      <created>1593613909467</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1593613909467</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="222" y="55" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593613967935">
+      <screen x="0" y="0" width="1536" height="802" />
+    </state>
+    <state x="222" y="55" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.802@0.0.1536.802" timestamp="1593613967935" />
+    <state x="548" y="155" key="FileChooserDialogImpl" timestamp="1593613964389">
+      <screen x="0" y="0" width="1536" height="802" />
+    </state>
+    <state x="548" y="155" key="FileChooserDialogImpl/0.0.1536.802@0.0.1536.802" timestamp="1593613964389" />
+    <state x="276" y="45" key="SettingsEditor" timestamp="1593613951848">
+      <screen x="0" y="0" width="1536" height="802" />
+    </state>
+    <state x="276" y="45" key="SettingsEditor/0.0.1536.802@0.0.1536.802" timestamp="1593613951848" />
+  </component>
+</project>
