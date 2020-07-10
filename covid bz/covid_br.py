@@ -1,6 +1,5 @@
 import pandas as pd
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
+from graficos import plotar_obitos_novos_ma
 
 
 def moving_average(N, lista):
@@ -25,8 +24,6 @@ for index, row in df.iterrows():
     data = row["data"]
     obiton = row["obitosNovos"]
     obitoa = row["obitosAcumulado"]
-    if estado == "RO":
-        print(obiton)
     if estado not in datas:
         datas[estado] = [data]
     else:
@@ -45,38 +42,5 @@ for estado in obitos_novos:
     lista_obitos = obitos_novos[estado]
     medias_moveis[estado] = moving_average(7, lista_obitos)
 
-fig1 = go.Figure(
-    layout=go.Layout(
-        title=go.layout.Title(text="Médias móveis"),
-        xaxis=dict(
-            nticks=40,
-        ),
-        yaxis=dict(
-            nticks=20,
-        )
-    )
-)
-
-fig1.add_trace(
-    go.Scatter(
-        x=datas["RO"],
-        y=obitos_novos["RO"],
-        name="RO",
-        line=go.scatter.Line(color="red"),
-    ),
-)
-
-fig1.update_layout(
-    xaxis_tickformatstops=[
-        dict(dtickrange=[None, 1000], value="%H:%M:%S.%L ms"),
-        dict(dtickrange=[1000, 60000], value="%H:%M:%S s"),
-        dict(dtickrange=[60000, 3600000], value="%H:%M m"),
-        dict(dtickrange=[3600000, 86400000], value="%H:%M h"),
-        dict(dtickrange=[86400000, 604800000], value="%d/%m/%Y"),
-        dict(dtickrange=[604800000, "M1"], value="%d/%m/%Y"),
-        dict(dtickrange=["M1", "M12"], value="%b/%Y"),
-        dict(dtickrange=["M12", None], value="%Y")
-    ],
-)
-
-fig1.write_html("mm_ro.html")
+for estado in datas:
+    plotar_obitos_novos_ma(estado, datas, obitos_novos, medias_moveis)
