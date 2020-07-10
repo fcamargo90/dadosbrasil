@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fef45075-56fb-4638-bf82-bdb7b085b41c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dadosbrasil.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dadosbrasil.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/covid bz/covid_br.py" beforeDir="false" afterPath="$PROJECT_DIR$/covid bz/covid_br.py" afterDir="false" />
     </list>
