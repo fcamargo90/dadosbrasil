@@ -1,0 +1,24 @@
+
+SOLVOPT Solution to Rosenbrock Unconstraint Problem
+================================================================================
+
+        Objective Function: problema
+
+    Solution: 
+--------------------------------------------------------------------------------
+    Total Time:                    0.2862
+    Total Function Evaluations:       340
+    Sensitivities:        FD
+
+    Objectives:
+        Name        Value        Optimum
+	     f           10129             0
+
+	Variables (c - continuous, i - integer, d - discrete):
+        Name    Type       Value       Lower Bound  Upper Bound
+	     A        c	    536.874888       0.00e+00     2.00e+03 
+	     B        c	    442.698333       0.00e+00     2.00e+03 
+	     C        c	      3.063387       0.00e+00     2.00e+00 
+	     D        c	      0.058838       0.00e+00     1.00e+00 
+
+--------------------------------------------------------------------------------

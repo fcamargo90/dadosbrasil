@@ -1,12 +1,10 @@
-from pathlib import Path
 import plotly.graph_objects as go
-# from plotly.subplots import make_subplots
 
 
-def plotar_obitos_novos_ma(estado, datas, obitos_novos, medias_moveis):
+def plotar_modelos_de_estimacao(estado, datas, datas2, obitos_acumulados, estimacoes):
     fig1 = go.Figure(
         layout=go.Layout(
-            title=go.layout.Title(text="Médias móveis"),
+            title=go.layout.Title(text="Mortes acumuladas"),
             xaxis=dict(
                 nticks=40,
             ),
@@ -18,18 +16,18 @@ def plotar_obitos_novos_ma(estado, datas, obitos_novos, medias_moveis):
 
     fig1.add_trace(
         go.Scatter(
-            x=datas[estado],
-            y=obitos_novos[estado],
-            name="Óbitos novos",
+            x=datas,
+            y=obitos_acumulados,
+            name="Óbitos acumulados",
             line=go.scatter.Line(color="blue"),
         ),
     )
 
     fig1.add_trace(
         go.Scatter(
-            x=datas[estado][6:],
-            y=medias_moveis[estado],
-            name="Médias móveis",
+            x=datas2,
+            y=estimacoes,
+            name="Modelo de estimação",
             line=go.scatter.Line(color="red"),
         ),
     )
@@ -47,6 +45,6 @@ def plotar_obitos_novos_ma(estado, datas, obitos_novos, medias_moveis):
         ],
     )
 
-    fig1.write_html(r"./mm/" + estado + ".html")
+    fig1.write_html(r"./est/" + estado + ".html")
 
     return
