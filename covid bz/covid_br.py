@@ -60,10 +60,10 @@ for estado in obitos_acumulados:
     print(estado)
     datas2[estado] = []
     estimacoes[estado] = []
-    x = otimiza(obitos_acumulados[estado], x0)
+    x, fun_obj = otimiza(obitos_acumulados[estado], x0)
     opt_par[estado] = list(x)
     with open("./opt/results" + estado + ".txt", mode="w") as file:
-        file.write(f"{opt_par[estado]}")
+        file.write(f"{fun_obj}\n{opt_par[estado]}")
     for t in range(len(datas[estado]) + additional_points):
         if t > 0:
             valor = estimacao(x, t)

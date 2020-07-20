@@ -40,4 +40,4 @@ def problema(x, obitos):
 def otimiza(obitos, x0):
     partial_func = partial(problema, obitos=obitos)
     result = diffev2(partial_func, x0=x0, npop=10, gtol=200, disp=False, full_output=True, maxiter=300)
-    return result[0]
+    return result[0], result[1]
