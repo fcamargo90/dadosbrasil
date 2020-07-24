@@ -41,7 +41,7 @@ def get_estimation_model(cumulative_deaths, population, save_file=True):
 
 
 def get_estimated_deaths(dates, cumulative_deaths, model_parameters):
-    additional_points = 300
+    maximum_additional_points = 300
     deltat = timedelta(days=1)
     estimation_dates = dict()
     estimated_deaths = dict()
@@ -49,7 +49,7 @@ def get_estimated_deaths(dates, cumulative_deaths, model_parameters):
         estimation_dates[state] = []
         estimated_deaths[state] = []
         x = model_parameters[state]
-        for t in range(len(dates[state]) + additional_points):
+        for t in range(len(dates[state]) + maximum_additional_points):
             if t > 0:
                 estimated_value = estimation(x, t)
                 if estimated_value / estimated_deaths[state][-1] > 1.001:
