@@ -67,7 +67,7 @@ def get_estimated_deaths(dates, cumulative_deaths, model_parameters):
     return estimation_dates, estimated_deaths
 
 
-def get_estimated_deaths_figures(states, dates, cumulative_deaths, estimation_dates, estimated_deaths):
+def get_estimated_deaths_graphics(states, dates, cumulative_deaths, estimation_dates, estimated_deaths):
     figures = dict()
     for state in states:
         figures[state] = plot_estimated_deaths(
@@ -85,7 +85,7 @@ def get_moving_average_data(new_deaths, moving_averate_window):
     return moving_averages
 
 
-def get_new_deaths_figures(states, dates, new_deaths, moving_averages, moving_averate_window):
+def get_new_deaths_graphics(states, dates, new_deaths, moving_averages, moving_averate_window):
     figures = dict()
     for state in states:
         figures[state] = plot_new_deaths(
