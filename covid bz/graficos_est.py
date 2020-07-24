@@ -1,10 +1,10 @@
 import plotly.graph_objects as go
 
 
-def plotar_modelos_de_estimacao(estado, datas, datas2, obitos_acumulados, estimacoes):
+def plot_estimated_deaths(state, dates, cumulative_deaths, estimation_dates, estimated_deaths):
     fig1 = go.Figure(
         layout=go.Layout(
-            title=go.layout.Title(text="Mortes acumuladas"),
+            title=go.layout.Title(text=f"Cumulative and estimated deaths ({state})"),
             xaxis=dict(
                 nticks=40,
             ),
@@ -16,18 +16,18 @@ def plotar_modelos_de_estimacao(estado, datas, datas2, obitos_acumulados, estima
 
     fig1.add_trace(
         go.Scatter(
-            x=datas,
-            y=obitos_acumulados,
-            name="Óbitos acumulados",
+            x=dates,
+            y=cumulative_deaths,
+            name="Cumulative deaths",
             line=go.scatter.Line(color="blue"),
         ),
     )
 
     fig1.add_trace(
         go.Scatter(
-            x=datas2,
-            y=estimacoes,
-            name="Modelo de estimação",
+            x=estimation_dates,
+            y=estimated_deaths,
+            name="Estimated deaths",
             line=go.scatter.Line(color="red"),
         ),
     )
@@ -45,6 +45,6 @@ def plotar_modelos_de_estimacao(estado, datas, datas2, obitos_acumulados, estima
         ],
     )
 
-    fig1.write_html(r"./est/" + estado + ".html")
+    fig1.write_html(f"./est/{state}.html")
 
-    return
+    return fig1

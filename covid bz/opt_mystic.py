@@ -3,41 +3,41 @@ from math import exp
 from mystic.solvers import diffev2
 
 
-def estimacao(x, t):
+def constraint(x, population):
+    # A <= state_population * 0.5%
+    return x[0] - population * 0.005
+
+
+def estimation(x, t):
     A, B, C, D = x
     est = A / (1 + B * exp(-(C + D * t)))
     return est
 
 
-def funcao_objetivo(x, obitos):
+def gradient(x, cumulative_deaths):
+    a, b, c, d = x
+    diff_a, diff_b, diff_c, diff_d = ([], [], [], [])
+    for t, deaths in enumerate(cumulative_deaths):
+        diff_a.append(-(2*(deaths-a/(b*exp(-d*t-c)+1)))/(b*exp(-d*t-c)+1))
+        diff_b.append((2*a*exp(d*t+c)*(deaths*b+(exp(c)*deaths-a*exp(c))*exp(d*t)))/(b+exp(d*t+c))**3)
+        diff_c.append(-(2*a*b*exp(-c-t*d)*(deaths-a/(b*exp(-c-t*d)+1)))/(b*exp(-c-t*d)+1)**2)
+        diff_d.append(-(2*t*a*b*((exp(c)*deaths-a*exp(c))*exp(t*d)+b*deaths)*exp(t*d+c))/(exp(t*d+c)+b)**3)
+    return sum(diff_a), sum(diff_b), sum(diff_c), sum(diff_d)
+
+
+def objective_function(x, cumulative_deaths):
     y = []
-    for t, nobitos in enumerate(obitos):
-        est = estimacao(x, t)
-        yt = (nobitos - est)**2
+    for t, deaths in enumerate(cumulative_deaths):
+        est = estimation(x, t)
+        yt = (deaths - est)**2
         y.append(yt)
     return sum(y)
 
 
-def derivada(x, obitos):
-    a, b, c, d = x
-    deriv_a, deriv_b, deriv_c, deriv_d = ([], [], [], [])
-    for i, o in enumerate(obitos):
-        deriv_a.append(-(2*(o-a/(b*exp(-d*i-c)+1)))/(b*exp(-d*i-c)+1))
-        deriv_b.append((2*a*exp(d*i+c)*(o*b+(exp(c)*o-a*exp(c))*exp(d*i)))/(b+exp(d*i+c))**3)
-        deriv_c.append(-(2*a*b*exp(-c-i*d)*(o-a/(b*exp(-c-i*d)+1)))/(b*exp(-c-i*d)+1)**2)
-        deriv_d.append(-(2*i*a*b*((exp(c)*o-a*exp(c))*exp(i*d)+b*o)*exp(i*d+c))/(exp(i*d+c)+b)**3)
-    return sum(deriv_a), sum(deriv_b), sum(deriv_c), sum(deriv_d)
-
-
-def problema(x, obitos):
-
-    f = funcao_objetivo(x, obitos)
-    # g = derivada(x, obitos)
-    # g = []
-    return f
-
-
-def otimiza(obitos, x0):
-    partial_func = partial(problema, obitos=obitos)
-    result = diffev2(partial_func, x0=x0, npop=10, gtol=200, disp=False, full_output=True, maxiter=300)
+def optimize(x0, cumulative_deaths, population):
+    partial_func = partial(objective_function, cumulative_deaths=cumulative_deaths)
+    partial_const = partial(constraint, population=population)
+    result = diffev2(
+        partial_func, x0=x0, penalty=partial_const, npop=10, gtol=200, disp=False, full_output=True, maxiter=300
+    )
     return result[0], result[1]

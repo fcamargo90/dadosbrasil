@@ -1,10 +1,10 @@
 import plotly.graph_objects as go
 
 
-def plotar_obitos_novos_ma(estado, datas, obitos_novos, medias_moveis):
+def plot_new_deaths(state, dates, new_deaths, moving_averages, moving_averate_window):
     fig1 = go.Figure(
         layout=go.Layout(
-            title=go.layout.Title(text="Médias móveis"),
+            title=go.layout.Title(text=f"New deaths and moving averages ({state})"),
             xaxis=dict(
                 nticks=40,
             ),
@@ -16,18 +16,18 @@ def plotar_obitos_novos_ma(estado, datas, obitos_novos, medias_moveis):
 
     fig1.add_trace(
         go.Scatter(
-            x=datas,
-            y=obitos_novos,
-            name="Óbitos novos",
+            x=dates,
+            y=new_deaths,
+            name="New deaths",
             line=go.scatter.Line(color="blue"),
         ),
     )
 
     fig1.add_trace(
         go.Scatter(
-            x=datas[6:],
-            y=medias_moveis,
-            name="Médias móveis",
+            x=dates[moving_averate_window - 1:],
+            y=moving_averages,
+            name="Moving averages",
             line=go.scatter.Line(color="red"),
         ),
     )
@@ -45,6 +45,6 @@ def plotar_obitos_novos_ma(estado, datas, obitos_novos, medias_moveis):
         ],
     )
 
-    fig1.write_html(r"./mm/" + estado + ".html")
+    fig1.write_html(f"./mm/{state}.html")
 
-    return
+    return fig1

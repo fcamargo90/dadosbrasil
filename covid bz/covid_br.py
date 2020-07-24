@@ -1,83 +1,43 @@
-from datetime import timedelta
+from datetime import datetime
 import pandas as pd
-from graficos_mm import plotar_obitos_novos_ma
-from graficos_est import plotar_modelos_de_estimacao
-from opt_mystic import estimacao, otimiza
+from covid_br_aux import get_death_data, get_estimated_deaths, get_estimated_deaths_figures, get_estimation_model,\
+    get_moving_average_data, get_new_deaths_figures, get_population_data
 
 
-def moving_average(N, lista):
-    cumsum, moving_aves = [0], []
-
-    for i, x in enumerate(lista, 1):
-        cumsum.append(cumsum[i - 1] + x)
-        if i >= N:
-            moving_ave = (cumsum[i] - cumsum[i - N]) / N
-            moving_aves.append(moving_ave)
-
-    return moving_aves
+def dateparse(date):
+    return datetime.strptime(date, "%d/%m/%Y")
 
 
-df = pd.read_excel("HIST_PAINEL_COVIDBR_09jul2020_states.xlsx")
+if __name__ == "__main__":
 
-datas = dict()
-obitos_novos = dict()
-obitos_acumulados = dict()
-for index, row in df.iterrows():
-    estado = row["estado"]
-    data = row["data"]
-    obiton = row["obitosNovos"]
-    obitoa = row["obitosAcumulado"]
-    if obitoa >= 10:
-        if estado not in datas:
-            datas[estado] = [data]
-        else:
-            datas[estado].append(data)
-        if estado not in obitos_novos:
-            obitos_novos[estado] = [obiton]
-        else:
-            obitos_novos[estado].append(obiton)
-        if estado not in obitos_acumulados:
-            obitos_acumulados[estado] = [obitoa]
-        else:
-            obitos_acumulados[estado].append(obitoa)
+    moving_averate_window = 7
 
-medias_moveis = dict()
-for estado in obitos_novos:
-    lista_obitos = obitos_novos[estado]
-    medias_moveis[estado] = moving_average(7, lista_obitos)
+    death_dataframe = pd.read_csv(
+        "HIST_PAINEL_COVIDBR_23jul2020_states.csv", converters={"data": dateparse}
+    )
 
-for estado in datas:
-    plotar_obitos_novos_ma(estado, datas[estado], obitos_novos[estado], medias_moveis[estado])
+    states, dates, new_deaths, cumulative_deaths = get_death_data(death_dataframe)
 
-x0 = [500, 500, 1, 0.1]
-additional_points = 300
-deltat = timedelta(days=1)
-datas2 = dict()
-estimacoes = dict()
-opt_par = dict()
-# estado = "DF"
-for estado in obitos_acumulados:
-    print(estado)
-    datas2[estado] = []
-    estimacoes[estado] = []
-    x, fun_obj = otimiza(obitos_acumulados[estado], x0)
-    opt_par[estado] = list(x)
-    with open("./opt/results" + estado + ".txt", mode="w") as file:
-        file.write(f"{fun_obj}\n{opt_par[estado]}")
-    for t in range(len(datas[estado]) + additional_points):
-        if t > 0:
-            valor = estimacao(x, t)
-            if valor / estimacoes[estado][-1] > 1.001:
-                estimacoes[estado].append(valor)
-                if t < len(datas[estado]):
-                    datas2[estado].append(datas[estado][t])
-                else:
-                    datas2[estado].append(datas2[estado][-1] + deltat)
-            else:
-                break
-        else:
-            estimacoes[estado].append(estimacao(x, t))
-            datas2[estado].append(datas[estado][t])
+    population_dataframe = pd.read_csv("populacao.csv", dtype={"Populacao": int})
 
-for estado in datas:
-    plotar_modelos_de_estimacao(estado, datas[estado], datas2[estado], obitos_acumulados[estado], estimacoes[estado])
+    population = get_population_data(population_dataframe)
+
+    moving_averages = get_moving_average_data(new_deaths, moving_averate_window)
+
+    model_parameters = get_estimation_model(cumulative_deaths, population)
+
+    estimation_dates, estimated_deaths = get_estimated_deaths(dates, cumulative_deaths, model_parameters)
+
+    new_deaths_figures = get_new_deaths_figures(states, dates, new_deaths, moving_averages, moving_averate_window)
+
+    with open("new_deaths.html", "a") as file:
+        for state, figure in new_deaths_figures.items():
+            file.write(figure.to_html(full_html=False, include_plotlyjs='cdn'))
+
+    estimated_deaths_figures = get_estimated_deaths_figures(
+        states, dates, cumulative_deaths, estimation_dates, estimated_deaths
+    )
+
+    with open("estimated_deaths.html", "a") as file:
+        for state, figure in estimated_deaths_figures.items():
+            file.write(figure.to_html(full_html=False, include_plotlyjs='cdn'))
