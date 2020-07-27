@@ -1,6 +1,6 @@
 from functools import partial
 from math import exp
-from mystic.solvers import diffev2
+from mystic.solvers import diffev2, fmin_powell
 
 
 def constraint(x, population):
@@ -25,27 +25,30 @@ def gradient(x, cumulative_deaths):
     return sum(diff_a), sum(diff_b), sum(diff_c), sum(diff_d)
 
 
-def objective_function(x, cumulative_deaths):
+def objective_function(x, cumulative_deaths, moving_averages):
     y1 = []
     for t, deaths in enumerate(cumulative_deaths):
         est = estimation(x, t)
         yt = (deaths - est)**2
         y1.append(yt)
-    # y2 = []
-    # for t, deaths in enumerate(moving_averages):
-    #     est = time_differential(x, t)
-    #     yt = (deaths - est)**2
-    #     y2.append(yt)
-    # return sum(y1) + sum(y2)
-    return sum(y1)
+    y2 = []
+    for t, deaths in enumerate(moving_averages):
+        est = time_differential(x, t)
+        yt = (deaths - est)**2
+        y2.append(yt)
+    return sum(y1) + 500*sum(y2)
+    # return sum(y1)
 
 
-def optimize(x0, cumulative_deaths, population, _):
-    partial_func = partial(objective_function, cumulative_deaths=cumulative_deaths)
-    # partial_func = partial(objective_function, cumulative_deaths=cumulative_deaths, moving_averages=moving_averages)
+def optimize(x0, cumulative_deaths, population, moving_averages):
+    # partial_func = partial(objective_function, cumulative_deaths=cumulative_deaths)
+    partial_func = partial(objective_function, cumulative_deaths=cumulative_deaths, moving_averages=moving_averages)
     partial_const = partial(constraint, population=population)
-    result = diffev2(
-        partial_func, x0=x0, penalty=partial_const, npop=10, gtol=200, disp=False, full_output=True, maxiter=300
+    # result = diffev2(
+    #     partial_func, x0=x0, penalty=partial_const, npop=15, gtol=200, disp=False, full_output=True, maxiter=1000
+    # )
+    result = fmin_powell(
+        partial_func, x0=x0, penalty=partial_const, disp=False, full_output=True
     )
     return result[0], result[1]
 
