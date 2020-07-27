@@ -1,10 +1,13 @@
 import plotly.graph_objects as go
 
 
-def plot_new_deaths(state, dates, new_deaths, moving_averages, moving_averate_window):
+def plot_est_cumu_deaths(
+        states, estimation_dates, estimated_deaths, estimated_daily_deaths_sates_out
+):
+
     fig1 = go.Figure(
         layout=go.Layout(
-            title=go.layout.Title(text=f"New deaths and moving averages ({state})"),
+            title=go.layout.Title(text=f"Estimated cumulative deaths by state"),
             xaxis=dict(
                 nticks=40,
             ),
@@ -14,23 +17,15 @@ def plot_new_deaths(state, dates, new_deaths, moving_averages, moving_averate_wi
         )
     )
 
-    fig1.add_trace(
-        go.Scatter(
-            x=dates,
-            y=new_deaths,
-            name="New deaths",
-            line=go.scatter.Line(color="blue"),
-        ),
-    )
-
-    fig1.add_trace(
-        go.Scatter(
-            x=dates[moving_averate_window - 1:],
-            y=moving_averages,
-            name="Moving averages",
-            line=go.scatter.Line(color="red"),
-        ),
-    )
+    for state in states:
+        fig1.add_trace(
+            go.Scatter(
+                x=estimation_dates[state],
+                y=estimated_deaths[state],
+                name=f"({state})",
+                line=go.scatter.Line(),
+            ),
+        )
 
     fig1.update_layout(
         xaxis_tickformatstops=[
@@ -45,6 +40,7 @@ def plot_new_deaths(state, dates, new_deaths, moving_averages, moving_averate_wi
         ],
     )
 
-    fig1.write_html(f"./mm/{state}.html")
+    with open(estimated_daily_deaths_sates_out, "w") as out:
+        fig1.write_html(out)
 
     return fig1

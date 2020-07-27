@@ -26,18 +26,31 @@ def gradient(x, cumulative_deaths):
 
 
 def objective_function(x, cumulative_deaths):
-    y = []
+    y1 = []
     for t, deaths in enumerate(cumulative_deaths):
         est = estimation(x, t)
         yt = (deaths - est)**2
-        y.append(yt)
-    return sum(y)
+        y1.append(yt)
+    # y2 = []
+    # for t, deaths in enumerate(moving_averages):
+    #     est = time_differential(x, t)
+    #     yt = (deaths - est)**2
+    #     y2.append(yt)
+    # return sum(y1) + sum(y2)
+    return sum(y1)
 
 
-def optimize(x0, cumulative_deaths, population):
+def optimize(x0, cumulative_deaths, population, _):
     partial_func = partial(objective_function, cumulative_deaths=cumulative_deaths)
+    # partial_func = partial(objective_function, cumulative_deaths=cumulative_deaths, moving_averages=moving_averages)
     partial_const = partial(constraint, population=population)
     result = diffev2(
         partial_func, x0=x0, penalty=partial_const, npop=10, gtol=200, disp=False, full_output=True, maxiter=300
     )
     return result[0], result[1]
+
+
+def time_differential(x, t):
+    a, b, c, d = x
+    diff = (a * b * d * exp(d * t + c)) / (exp(d * t + c) + b) ** 2
+    return diff

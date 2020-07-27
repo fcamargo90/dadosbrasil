@@ -1,10 +1,11 @@
+from pathlib import Path
 import plotly.graph_objects as go
 
 
-def plot_estimated_deaths(state, dates, cumulative_deaths, estimation_dates, estimated_deaths):
+def plot_cumulative_deaths(state, dates, cumulative_deaths, estimation_dates, estimated_deaths):
     fig1 = go.Figure(
         layout=go.Layout(
-            title=go.layout.Title(text=f"Cumulative and estimated deaths ({state})"),
+            title=go.layout.Title(text=f"Registered and estimated cumulative deaths ({state})"),
             xaxis=dict(
                 nticks=40,
             ),
@@ -45,6 +46,8 @@ def plot_estimated_deaths(state, dates, cumulative_deaths, estimation_dates, est
         ],
     )
 
-    fig1.write_html(f"./est/{state}.html")
+    out_path = Path(f"./est/{state}.html")
+    with open(out_path, "w") as out:
+        fig1.write_html(out)
 
     return fig1
