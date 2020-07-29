@@ -7,7 +7,7 @@ def plot_est_cumu_deaths(
 
     fig1 = go.Figure(
         layout=go.Layout(
-            title=go.layout.Title(text=f"Estimated cumulative deaths by state"),
+            title=go.layout.Title(text="Estimated cumulative deaths by state"),
             xaxis=dict(
                 nticks=40,
             ),
