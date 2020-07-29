@@ -22,7 +22,7 @@ if __name__ == "__main__":
     moving_averate_window = 7
 
     death_dataframe = pd.read_csv(
-        "HIST_PAINEL_COVIDBR_23jul2020_states.csv", converters={"data": dateparse}
+        "HIST_PAINEL_COVIDBR_28jul2020_states.csv", converters={"data": dateparse}
     )
 
     states, dates, daily_deaths, cumulative_deaths = get_death_data(death_dataframe)
